@@ -28,7 +28,7 @@ public class Main {
                 .build();
 
         Producer producer = new KafkaProducer(config.get());
-        for(int i = 100; i < 200; i++){
+        for(int i = 0; i < 100; i++){
             producer.send(new ProducerRecord("my-topic", String.valueOf(i), "topic-" + String.valueOf(i)));
         }
         producer.close();

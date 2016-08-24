@@ -14,7 +14,7 @@ import java.util.Properties;
  */
 public class ConsumerConfig {
 
-    private Properties config;
+    private Properties config = new Properties();
 
     private ConsumerConfig(Builder builder){
         putConfig("bootstrap.servers", builder.bootstrapServers);
