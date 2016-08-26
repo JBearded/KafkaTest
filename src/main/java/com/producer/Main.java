@@ -1,8 +1,5 @@
 package com.producer;
 
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.Producer;
-import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
 
 import java.util.Arrays;
@@ -27,10 +24,12 @@ public class Main {
                 .valueSerializer(StringSerializer.class)
                 .build();
 
-        Producer producer = new KafkaProducer(config.get());
+        MessageProducer producer = new MessageProducer(config);
+        producer.init();
         for(int i = 0; i < 100; i++){
-            producer.send(new ProducerRecord("my-topic", String.valueOf(i), "topic-" + String.valueOf(i)));
+            producer.send("my-topic", String.valueOf(i), "topic-" + String.valueOf(i));
         }
+        producer.flush();
         producer.close();
     }
 }
