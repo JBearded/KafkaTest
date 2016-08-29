@@ -43,16 +43,30 @@ public class MessageConsumer<K, V> {
     }
 
     public void consume(long timeout){
-        while (true) {
-            ConsumerRecords<K, V> records = consumer.poll(timeout);
-            for(TopicPartition topicPartition : records.partitions()){
-                List<ConsumerRecord<K, V>> list = records.records(topicPartition);
-                for(ConsumerRecord<K, V> record : list){
-                    try{
-                        handler.handle(topicPartition.topic(), record);
-                    }catch (Exception e){
-                        RecordInfo<K, V> recordInfo = new RecordInfo<K, V>(topicPartition.topic(), record);
-                        missRecordQueue.offer(recordInfo);
+        new Thread(new ConsumeTask(timeout)).start();
+    }
+
+    private class ConsumeTask implements Runnable{
+
+        private long timeout;
+
+        public ConsumeTask(long timeout) {
+            this.timeout = timeout;
+        }
+
+        public void run() {
+
+            while (true) {
+                ConsumerRecords<K, V> records = consumer.poll(timeout);
+                for(TopicPartition topicPartition : records.partitions()){
+                    List<ConsumerRecord<K, V>> list = records.records(topicPartition);
+                    for(ConsumerRecord<K, V> record : list){
+                        try{
+                            handler.handle(topicPartition.topic(), record);
+                        }catch (Exception e){
+                            RecordInfo<K, V> recordInfo = new RecordInfo<K, V>(topicPartition.topic(), record);
+                            missRecordQueue.offer(recordInfo);
+                        }
                     }
                 }
             }

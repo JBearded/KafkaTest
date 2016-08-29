@@ -24,9 +24,10 @@
         </dependency>
         <dependency>
             <groupId>org.apache.kafka</groupId>
-            <artifactId>kafka-clients</artifactId>
+            <artifactId>kafka_2.10</artifactId>
             <version>0.10.0.0</version>
         </dependency>
+
 
     </dependencies>
 </project>

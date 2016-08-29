@@ -49,7 +49,7 @@ public class MessageProducer<K, V> {
             Future<RecordMetadata> future = this.producer.send(record, callback);
             recordMetadata = future.get(30, TimeUnit.SECONDS);
         }catch (Exception e){
-            logger.error("error to send message. topic:{} key:{} value:{} ", topic, key, value, e);
+            logger.error("error to send message. topic:{} key:{} value:{}", new Object[]{topic, key, value, e});
             missRecordQueue.offer(recordInfo);
         }
         return recordMetadata;
