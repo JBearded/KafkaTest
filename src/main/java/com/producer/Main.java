@@ -1,5 +1,6 @@
 package com.producer;
 
+import org.apache.kafka.clients.producer.internals.DefaultPartitioner;
 import org.apache.kafka.common.serialization.StringSerializer;
 
 import java.util.Arrays;
@@ -22,10 +23,10 @@ public class Main {
                 .bufferMemory(33554432L)
                 .keySerializer(StringSerializer.class)
                 .valueSerializer(StringSerializer.class)
+                .partitionerClass(DefaultPartitioner.class)
                 .build();
 
         MessageProducer producer = new MessageProducer(config);
-        producer.init();
         for(int i = 0; i < 100; i++){
             producer.send("my-topic", String.valueOf(i), "topic-" + String.valueOf(i));
         }

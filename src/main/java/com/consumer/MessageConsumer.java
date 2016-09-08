@@ -36,10 +36,7 @@ public class MessageConsumer<K, V> {
         this.config = config;
         this.consumer = new KafkaConsumer<K, V>(config.get());
         this.consumer.subscribe(topics);
-    }
-
-    public void init(){
-        timer.schedule(new HandleMissRecordTask(missRecordQueue), 0, 2000);
+        timer.schedule(new HandleMissRecordTask(missRecordQueue), 1000, 2000);
     }
 
     public void consume(long timeout){

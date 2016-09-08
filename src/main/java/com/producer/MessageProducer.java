@@ -31,10 +31,7 @@ public class MessageProducer<K, V> {
     public MessageProducer(ProducerConfig config) {
         this.config = config;
         this.producer = new KafkaProducer<K, V>(this.config.get());
-    }
-
-    public void init(){
-        this.timer.schedule(new HandleMissRecordTask(this.missRecordQueue), 0, 2000);
+        this.timer.schedule(new HandleMissRecordTask(this.missRecordQueue), 1000, 2000);
     }
 
     public RecordMetadata send(String topic, K key, V value){
