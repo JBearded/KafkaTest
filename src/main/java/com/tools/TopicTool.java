@@ -79,4 +79,8 @@ public class TopicTool {
             throw new RuntimeException(responseTopicMetadata.error().exception());
         }
     }
+
+    public boolean exists(String topic){
+        return AdminUtils.topicExists(zkUtils, topic);
+    }
 }
